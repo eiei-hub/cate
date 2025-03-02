@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小猫表白孔孔</title>
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #ffebf3;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            overflow: hidden;
+            /* 防止爱心溢出页面 */
+            position: relative;
+            /* 用于定位爱心 */
+        }
+
+        /* 主容器样式 */
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            animation: fadeIn 1s ease-in-out;
+            position: relative;
+            z-index: 1;
+            /* 确保内容在爱心之上 */
+        }
+
+        /* 图片样式 */
+        .cat-image {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 50%;
+            border: 5px solid #ff6b81;
+            box-shadow: 0 5px 15px rgba(255, 107, 129, 0.3);
+        }
+
+        /* 文字样式 */
+        .message {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* 按钮容器样式 */
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 按钮通用样式 */
+        .button {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* “可以”按钮样式 */
+        .yes {
+            background-color: #ff6b81;
+        }
+
+        .yes:hover {
+            background-color: #ff4757;
+            transform: translateY(-3px);
+        }
+
+        /* “不要”按钮样式 */
+        .no {
+            background-color: #70a1ff;
+        }
+
+        .no:hover {
+            background-color: #5352ed;
+            transform: translateY(-3px);
+        }
+
+        /* 隐藏内容样式 */
+        .hidden {
+            display: none;
+        }
+
+        /* 最终图片样式 */
+        .final-image {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 50%;
+            border: 5px solid #ff6b81;
+            box-shadow: 0 5px 15px rgba(255, 107, 129, 0.3);
+        }
+
+        /* 最终文字样式 */
+        .final-message {
+            font-size: 24px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 爱心样式 */
+        .heart {
+            position: absolute;
+            color: #ff6b81;
+            font-size: 20px;
+            animation: float 5s ease-in-out infinite;
+            z-index: 0;
+            /* 确保爱心在内容之下 */
+        }
+
+        /* 爱心浮动动画 */
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: translateY(-20px) scale(1.2);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* 手机端优化 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+
+            .cat-image,
+            .final-image {
+                width: 120px;
+            }
+
+            .message,
+            .final-message {
+                font-size: 20px;
+            }
+
+            .button {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 主页面内容 -->
+    <div class="container" id="mainContent">
+        <img src="cate1.png" alt="小猫" class="cat-image" id="catImage">
+        <div class="message" id="message">可以成为我的恋人吗？</div>
+        <div class="buttons">
+            <button class="button yes" id="yesButton">可以</button>
+            <button class="button no" id="noButton">不要</button>
+        </div>
+    </div>
+
+    <!-- “喜欢你”页面内容 -->
+    <div class="container hidden" id="yesContent">
+        <img src="cate2.png" alt="小猫" class="final-image">
+        <div class="final-message">喜欢你！！！</div>
+    </div>
+
+    <!-- “可是我喜欢你啊”页面内容 -->
+    <div class="container hidden" id="confessionContent">
+        <img src="cate3.png" alt="表白图片" class="final-image">
+        <div class="final-message">可是我是真的很喜欢你啊😭😭😭</div>
+    </div>
+
+    <script>
+        const mainContent = document.getElementById('mainContent');
+        const yesContent = document.getElementById('yesContent');
+        const confessionContent = document.getElementById('confessionContent');
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const message = document.getElementById('message');
+        const buttonsContainer = document.querySelector('.buttons');
+        const catImage = document.getElementById('catImage');
+        let clickCount = 0; // 记录点击次数
+        const maxClicks = 5; // 最大点击次数
+        let isImageChanged = false; // 标记图片是否已被替换
+
+        // 定义每次点击后的文字内容
+        const messages = [
+            "你认真的吗？",
+            "要不要再想想？",
+            "真的不再考虑一下吗？",
+            "我真的很喜欢你！",
+            "不能够这样！"
+        ];
+
+        // 点击“可以”按钮显示“喜欢你”页面
+        yesButton.addEventListener('click', () => {
+            mainContent.classList.add('hidden'); // 隐藏主页面
+            yesContent.classList.remove('hidden'); // 显示“喜欢你”页面
+
+            // 添加动态爱心
+            for (let i = 0; i < 20; i++) {
+                createHeart();
+            }
+        });
+
+        // 创建爱心
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw'; // 随机水平位置
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's'; // 随机动画时长
+            document.body.appendChild(heart);
+
+            // 爱心消失后移除
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        noButton.addEventListener('click', () => {
+            if (!isImageChanged) {
+                // 第一次点击时替换小猫图片
+                catImage.src = 'cate4.png'; // 替换为 cat4.png
+                isImageChanged = true; // 标记图片已替换
+            }
+
+            if (clickCount < messages.length) {
+                // 更新“不要”按钮的文字
+                noButton.textContent = messages[clickCount];
+
+                // 放大“可以”按钮
+                const currentYesScale = parseFloat(yesButton.style.transform.replace('scale(', '').replace(')', '')) || 1;
+                const newYesScale = currentYesScale + 0.2; // 每次放大0.2倍
+                yesButton.style.transform = `scale(${newYesScale})`;
+                yesButton.style.transition = 'transform 0.3s ease';
+
+                // 缩小“不要”按钮
+                const currentNoScale = parseFloat(noButton.style.transform.replace('scale(', '').replace(')', '')) || 1;
+                const newNoScale = currentNoScale - 0.1; // 每次缩小0.1倍
+                noButton.style.transform = `scale(${newNoScale})`;
+                noButton.style.transition = 'transform 0.3s ease';
+
+                // 调整按钮间距，避免重叠
+                const currentGap = parseFloat(getComputedStyle(buttonsContainer).gap);
+                const newGap = currentGap + 10; // 每次增加10px间距
+                buttonsContainer.style.gap = `${newGap}px`;
+
+                clickCount++; // 点击次数加1
+            } else if (clickCount === messages.length) {
+                // 超过最大点击次数后显示“可是我喜欢你啊”页面
+                mainContent.classList.add('hidden'); // 隐藏主页面
+                confessionContent.classList.remove('hidden'); // 显示“可是我喜欢你啊”页面
+                clickCount++; // 避免重复触发
+            }
+        });
+    </script>
+</body>
+
+</html>
